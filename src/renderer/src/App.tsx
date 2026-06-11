@@ -60,7 +60,7 @@ function App(): React.JSX.Element {
         if (ok) {
           next = "main";
         } else {
-          error = `Cannot reach remote Hermes at ${conn.remoteUrl}. Check the URL or switch to local mode.`;
+          error = `Cannot reach remote BHVA at ${conn.remoteUrl}. Check the URL or switch to local mode.`;
           next = "welcome";
         }
       } else {

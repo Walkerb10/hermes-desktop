@@ -1,5 +1,5 @@
 appId: com.nousresearch.hermes
-productName: Hermes One
+productName: BHVA One
 directories:
   buildResources: build
 files:
@@ -52,8 +52,8 @@ linux:
   category: Utility
   synopsis: Self-improving AI assistant desktop app
   description: >-
-    Hermes One is a native desktop app for installing, configuring, and chatting
-    with Hermes Agent — a self-improving AI assistant with tool use, multi-platform
+    BHVA One is a native desktop app for installing, configuring, and chatting
+    with BHVA Agent — a self-improving AI assistant with tool use, multi-platform
     messaging, and a closed learning loop.
 appImage:
   artifactName: ${name}-${version}.${ext}

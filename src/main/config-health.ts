@@ -215,9 +215,9 @@ function checkApiServerKeyPlacement(profile?: string): ConfigHealthIssue[] {
         code: "EMPTY_API_SERVER_KEY",
         severity: "warning",
         message:
-          "No API_SERVER_KEY is set — chat will fail because the Hermes gateway requires auth.",
+          "No API_SERVER_KEY is set — chat will fail because the BHVA gateway requires auth.",
         detail:
-          "API_SERVER_KEY is mandatory for Hermes API access. " +
+          "API_SERVER_KEY is mandatory for BHVA API access. " +
           "Set it in .env (or under Settings → Providers) to authenticate requests.",
         locations: [envFile],
         autoFixable: false,
@@ -694,11 +694,11 @@ function checkSiblingHermesHomeDrift(profile?: string): ConfigHealthIssue[] {
         issues.push({
           code: "SIBLING_HERMES_HOME_DRIFT",
           severity: "warning",
-          message: `${label} is set on WSL (${sibling.distro}) but not on the Windows side that Hermes One reads.`,
+          message: `${label} is set on WSL (${sibling.distro}) but not on the Windows side that BHVA One reads.`,
           detail:
             `WSL value (${where}): ${wslMasked}\n` +
             `Windows value: (not set)\n\n` +
-            `Hermes One reads only ${current.envFile.replace(/\\\.env$/, "")} — your CLI on WSL works, the desktop doesn't, because the value never made it across. Auto-fix copies the WSL value into the Windows-side file.`,
+            `BHVA One reads only ${current.envFile.replace(/\\\.env$/, "")} — your CLI on WSL works, the desktop doesn't, because the value never made it across. Auto-fix copies the WSL value into the Windows-side file.`,
           locations: [current.configFile, current.envFile, sibling.hermesHome],
           autoFixable: true,
           fixDescription: `Copy ${label} from WSL (${sibling.distro}) → Windows side.`,
@@ -723,7 +723,7 @@ function checkSiblingHermesHomeDrift(profile?: string): ConfigHealthIssue[] {
           detail:
             `Windows value: ${winMasked}\n` +
             `WSL value (${where}): (not set)\n\n` +
-            `Hermes One reads the Windows side, so this isn't blocking the desktop. Just a heads-up that your CLI on WSL is missing this value if you also use it there.`,
+            `BHVA One reads the Windows side, so this isn't blocking the desktop. Just a heads-up that your CLI on WSL is missing this value if you also use it there.`,
           locations: [current.envFile, sibling.hermesHome],
           autoFixable: false,
           context: {
@@ -744,7 +744,7 @@ function checkSiblingHermesHomeDrift(profile?: string): ConfigHealthIssue[] {
           detail:
             `Windows value: ${winMasked}\n` +
             `WSL value (${where}): ${wslMasked}\n\n` +
-            `Hermes One reads only the Windows side. If these were supposed to be the same, copy whichever value is current to the other side. If they're intentionally different, this notice is informational.`,
+            `BHVA One reads only the Windows side. If these were supposed to be the same, copy whichever value is current to the other side. If they're intentionally different, this notice is informational.`,
           locations: [current.envFile, sibling.hermesHome],
           autoFixable: false,
           context: {

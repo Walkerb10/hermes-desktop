@@ -14,6 +14,7 @@ import Memory from "../Memory/Memory";
 import Tools from "../Tools/Tools";
 import Gateway from "../Gateway/Gateway";
 import Office from "../Office/Office";
+import ClawOffice from "../Office/ClawOffice";
 import Models from "../Models/Models";
 import Providers from "../Providers/Providers";
 import Schedules from "../Schedules/Schedules";
@@ -22,6 +23,7 @@ import RemoteNotice from "../../components/RemoteNotice";
 import VerifyWarningBanner from "../../components/VerifyWarningBanner";
 import hermeslogo from "../../assets/hermes-one.svg";
 import {
+  Box,
   ChatBubble,
   Clock,
   Compass,
@@ -47,6 +49,7 @@ type View =
   | "discover"
   | "agents"
   | "office"
+  | "claw-office"
   | "models"
   | "providers"
   | "skills"
@@ -64,6 +67,7 @@ const NAV_ITEMS: { view: View; icon: LucideIcon; labelKey: string }[] = [
   // "agents" (Profiles) is reached from the sidebar-footer ProfileSwitcher's
   // "Manage profiles" action rather than a top-level nav item.
   { view: "office", icon: Building, labelKey: "navigation.office" },
+  { view: "claw-office", icon: Box, labelKey: "navigation.clawOffice" },
   { view: "kanban", icon: KanbanIcon, labelKey: "navigation.kanban" },
   { view: "models", icon: Layers, labelKey: "navigation.models" },
   { view: "providers", icon: KeyRound, labelKey: "navigation.providers" },
@@ -289,7 +293,7 @@ function Layout({
           <span
             className="sidebar-logo"
             role="img"
-            aria-label="Hermes"
+            aria-label="BHVA"
             style={{
               maskImage: `url(${hermeslogo})`,
               WebkitMaskImage: `url(${hermeslogo})`,
@@ -432,6 +436,15 @@ function Layout({
         {visitedViews.has("office") && (
           <div style={paneStyle("office")}>
             <Office profile={activeProfile} visible={view === "office"} />
+          </div>
+        )}
+
+        {visitedViews.has("claw-office") && (
+          <div style={paneStyle("claw-office")}>
+            <ClawOffice
+              profile={activeProfile}
+              visible={view === "claw-office"}
+            />
           </div>
         )}
 

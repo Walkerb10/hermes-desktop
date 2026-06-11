@@ -285,7 +285,7 @@ export function buildOfficeEnv(opts: {
 }): string {
   const adapterPort = opts.adapterPort ?? adapterPortFromWsUrl(opts.url);
   return [
-    "# Auto-configured by Hermes One",
+    "# Auto-configured by BHVA One",
     `PORT=${opts.port}`,
     `HOST=127.0.0.1`,
     `NEXT_PUBLIC_GATEWAY_URL=${opts.url}`,
@@ -965,7 +965,7 @@ export function startAdapter(): boolean {
 
   proc.on("close", (code) => {
     if (code && code !== 0 && !adapterError) {
-      adapterError = `Hermes adapter exited with code ${code}`;
+      adapterError = `BHVA adapter exited with code ${code}`;
     }
     adapterProcess = null;
     cleanupPid(ADAPTER_PID_FILE);
@@ -1023,7 +1023,7 @@ export function startAll(): { success: boolean; error?: string } {
   // Start adapter
   const adapterOk = startAdapter();
   if (!adapterOk) {
-    return { success: false, error: "Failed to start Hermes adapter" };
+    return { success: false, error: "Failed to start BHVA adapter" };
   }
 
   return { success: true };

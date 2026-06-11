@@ -429,7 +429,7 @@ async function waitForDashboardReady(
     if (await isDashboardReady(baseUrl, token)) return;
     await delay(500);
   }
-  throw new Error("Hermes dashboard gateway did not become ready");
+  throw new Error("BHVA dashboard gateway did not become ready");
 }
 
 class TuiGatewayClient {
@@ -472,14 +472,14 @@ class TuiGatewayClient {
   ): Promise<T> {
     await this.start();
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
-      throw new Error("Hermes dashboard gateway stream is not connected");
+      throw new Error("BHVA dashboard gateway stream is not connected");
     }
 
     const id = `r${++this.nextId}`;
     return new Promise<T>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pending.delete(id);
-        reject(new Error(`Hermes gateway request timed out: ${method}`));
+        reject(new Error(`BHVA gateway request timed out: ${method}`));
       }, timeoutMs);
       timer.unref?.();
       this.pending.set(id, {
@@ -521,7 +521,7 @@ class TuiGatewayClient {
   stop(): void {
     this.ws?.close();
     this.proc?.kill("SIGTERM");
-    this.rejectPending(new Error("Hermes dashboard gateway stream stopped"));
+    this.rejectPending(new Error("BHVA dashboard gateway stream stopped"));
     this.reset();
   }
 
@@ -567,7 +567,7 @@ class TuiGatewayClient {
       proc.once("exit", (code, signal) => {
         reject(
           new Error(
-            `Hermes dashboard gateway exited before ready (${signal || code})`,
+            `BHVA dashboard gateway exited before ready (${signal || code})`,
           ),
         );
       });
@@ -597,7 +597,7 @@ class TuiGatewayClient {
     proc.removeAllListeners("exit");
     proc.once("exit", (code, signal) => {
       const error = new Error(
-        `Hermes dashboard gateway exited (${signal || code})`,
+        `BHVA dashboard gateway exited (${signal || code})`,
       );
       this.rejectPending(error);
       this.reset();
@@ -609,7 +609,7 @@ class TuiGatewayClient {
       const ws = new WebSocket(url);
       this.ws = ws;
       const timer = setTimeout(() => {
-        reject(new Error("Hermes dashboard gateway WebSocket timed out"));
+        reject(new Error("BHVA dashboard gateway WebSocket timed out"));
         ws.close();
       }, 15_000);
       timer.unref?.();
@@ -625,7 +625,7 @@ class TuiGatewayClient {
       });
       ws.on("close", () => {
         if (this.ws !== ws) return;
-        const error = new Error("Hermes dashboard gateway WebSocket closed");
+        const error = new Error("BHVA dashboard gateway WebSocket closed");
         this.rejectPending(error);
         this.reset();
       });
@@ -646,7 +646,7 @@ class TuiGatewayClient {
       clearTimeout(pending.timer);
       this.pending.delete(String(frame.id));
       if (frame.error) {
-        pending.reject(new Error(frame.error.message || "Hermes RPC failed"));
+        pending.reject(new Error(frame.error.message || "BHVA RPC failed"));
       } else {
         pending.resolve(frame.result);
       }
@@ -711,7 +711,7 @@ function waitForGatewayEvent(
     let cleanup = (): void => undefined;
     const timer = setTimeout(() => {
       cleanup();
-      reject(new Error("Timed out waiting for Hermes gateway readiness"));
+      reject(new Error("Timed out waiting for BHVA gateway readiness"));
     }, timeoutMs);
     timer.unref?.();
     cleanup = client.onEvent((event) => {
@@ -1430,7 +1430,7 @@ function sendMessageViaApi(
   });
   req.on("timeout", () => {
     finish(
-      "API request timed out. Check the SSH tunnel and remote Hermes gateway.",
+      "API request timed out. Check the SSH tunnel and remote BHVA gateway.",
     );
     req.destroy();
   });
@@ -1591,7 +1591,7 @@ function sendMessageViaRuns(
       const err =
         typeof raw.error === "string" && raw.error
           ? raw.error
-          : "Hermes run failed.";
+          : "BHVA run failed.";
       if (!hasContent) {
         fallbackToChatCompletions();
         return;
@@ -1601,7 +1601,7 @@ function sendMessageViaRuns(
     }
 
     if (eventName === "run.cancelled") {
-      finish(hasContent ? undefined : "Hermes run was cancelled.");
+      finish(hasContent ? undefined : "BHVA run was cancelled.");
       return;
     }
 
@@ -1797,7 +1797,7 @@ async function sendMessageViaTuiGateway(
     cleanup();
     client.stop();
     console.warn(
-      "[chat] Hermes gateway stream failed before output; falling back to API stream:",
+      "[chat] BHVA gateway stream failed before output; falling back to API stream:",
       reason,
     );
     void sendMessageViaNonGatewayApi(
@@ -1865,7 +1865,7 @@ async function sendMessageViaTuiGateway(
       const error =
         typeof event.payload?.message === "string"
           ? event.payload.message
-          : "Hermes gateway stream reported an error.";
+          : "BHVA gateway stream reported an error.";
       if (!hasGatewayOutput) {
         startApiFallback(error);
         return;
@@ -1912,7 +1912,7 @@ async function sendMessageViaTuiGateway(
           .request("session.interrupt", { session_id: activeSessionId }, 5_000)
           .catch(() => undefined);
         finish(
-          "Hermes requested clarify input, but the gateway provided no request_id to answer.",
+          "BHVA requested clarify input, but the gateway provided no request_id to answer.",
         );
         return;
       }
@@ -1957,7 +1957,7 @@ async function sendMessageViaTuiGateway(
         .request("session.interrupt", { session_id: activeSessionId }, 5_000)
         .catch(() => undefined);
       finish(
-        `Hermes requested ${event.type.replace(".request", "")} input, but Hermes One does not yet expose that gateway dialog.`,
+        `BHVA requested ${event.type.replace(".request", "")} input, but BHVA One does not yet expose that gateway dialog.`,
       );
     }
   });
@@ -1991,7 +1991,7 @@ async function sendMessageViaTuiGateway(
     }
 
     if (!activeSessionId) {
-      throw new Error("Hermes gateway did not return a session id");
+      throw new Error("BHVA gateway did not return a session id");
     }
 
     if (!hasSessionInfo) {
@@ -2316,8 +2316,8 @@ function sendMessageViaCli(
       const detail = stderrBuffer.trim();
       cb.onError(
         detail
-          ? `Hermes exited with code ${code}: ${detail}`
-          : `Hermes exited with code ${code}. Check your model configuration and API key.`,
+          ? `BHVA exited with code ${code}: ${detail}`
+          : `BHVA exited with code ${code}. Check your model configuration and API key.`,
       );
     }
   });
@@ -2419,7 +2419,7 @@ async function sendMessageViaBestApi(
       );
     } catch (error) {
       console.warn(
-        "[chat] Hermes gateway stream unavailable; falling back to API stream:",
+        "[chat] BHVA gateway stream unavailable; falling back to API stream:",
         error instanceof Error ? error.message : String(error),
       );
     }
@@ -2703,14 +2703,14 @@ function invalidateApiCacheFor(profile?: string): void {
 function getGatewaySpawnError(): string | null {
   if (!existsSync(HERMES_PYTHON)) {
     return (
-      `Cannot start the gateway because the Hermes Python interpreter was not found at ${HERMES_PYTHON}. ` +
-      "Install or repair Hermes Agent, then try again."
+      `Cannot start the gateway because the BHVA Python interpreter was not found at ${HERMES_PYTHON}. ` +
+      "Install or repair BHVA Agent, then try again."
     );
   }
   if (!existsSync(HERMES_REPO)) {
     return (
       `Cannot start the gateway because the hermes-agent repository was not found at ${HERMES_REPO}. ` +
-      "Install or repair Hermes Agent, then try again."
+      "Install or repair BHVA Agent, then try again."
     );
   }
   return null;
@@ -2814,7 +2814,7 @@ export function startGatewayDetailed(profile?: string): GatewayStartResult {
   // that pops a generic error dialog.  Refuse cleanly here.
   if (isRemoteMode()) {
     const error =
-      "The local gateway can only be started in local mode. Switch to local mode, or start the gateway on the remote Hermes host.";
+      "The local gateway can only be started in local mode. Switch to local mode, or start the gateway on the remote BHVA host.";
     console.warn(
       "[gateway] startGateway() called in remote/SSH mode — refusing local spawn",
     );

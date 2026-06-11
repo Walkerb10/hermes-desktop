@@ -1,6 +1,7 @@
 export {
   ArrowRight,
   Bot,
+  Box,
   Brain,
   Building,
   ChevronDown,

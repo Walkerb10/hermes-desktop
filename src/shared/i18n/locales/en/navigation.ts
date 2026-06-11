@@ -13,6 +13,7 @@ export default {
   schedules: "Schedules",
   kanban: "Kanban",
   gateway: "Gateway",
+  clawOffice: "Office 3D",
   settings: "Settings",
   collapseSidebar: "Collapse sidebar",
   expandSidebar: "Expand sidebar",

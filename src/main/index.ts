@@ -519,7 +519,7 @@ function setupIPC(): void {
         event.sender.send("install-progress", {
           step: 1,
           totalSteps: 1,
-          title: "Updating remote Hermes Agent",
+          title: "Updating remote BHVA Agent",
           detail: "Running hermes update over SSH...",
           log: "Running hermes update over SSH...\n",
         });
@@ -1026,7 +1026,7 @@ function setupIPC(): void {
                 .trim()
                 .slice(0, 80);
               new Notification({
-                title: "Hermes One",
+                title: "BHVA One",
                 body: preview || "Response ready",
               }).show();
             }
@@ -1038,7 +1038,7 @@ function setupIPC(): void {
             // Notify on error too if window not focused
             if (mainWindow && !mainWindow.isFocused()) {
               new Notification({
-                title: "Hermes One — Error",
+                title: "BHVA One — Error",
                 body: error.slice(0, 100),
               }).show();
             }
@@ -1209,7 +1209,7 @@ function setupIPC(): void {
         success: false,
         running: false,
         error:
-          "Remote mode points at an already-running Hermes server. Start or restart the gateway on that remote host.",
+          "Remote mode points at an already-running BHVA server. Start or restart the gateway on that remote host.",
       };
     }
     return startGatewayDetailed();
@@ -2140,7 +2140,7 @@ function buildMenu(): void {
       label: "Help",
       submenu: [
         {
-          label: "Hermes Agent on GitHub",
+          label: "BHVA Agent on GitHub",
           click: (): void => {
             openExternalUrl("https://github.com/NousResearch/hermes-agent/");
           },
@@ -2259,7 +2259,7 @@ if (process.env.ENABLE_CDP === "1") {
 }
 
 app.whenReady().then(() => {
-  app.setName("Hermes One");
+  app.setName("BHVA One");
   electronApp.setAppUserModelId("com.nousresearch.hermes");
   cleanupTempMediaFiles();
 
