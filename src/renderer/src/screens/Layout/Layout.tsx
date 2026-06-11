@@ -21,7 +21,6 @@ import Schedules from "../Schedules/Schedules";
 import Kanban from "../Kanban/Kanban";
 import RemoteNotice from "../../components/RemoteNotice";
 import VerifyWarningBanner from "../../components/VerifyWarningBanner";
-import hermeslogo from "../../assets/hermes-one.svg";
 import {
   Box,
   ChatBubble,
@@ -295,10 +294,20 @@ function Layout({
             role="img"
             aria-label="BHVA"
             style={{
-              maskImage: `url(${hermeslogo})`,
-              WebkitMaskImage: `url(${hermeslogo})`,
+              maskImage: "none",
+              WebkitMaskImage: "none",
+              background: "none",
+              width: "auto",
+              display: "inline-flex",
+              alignItems: "center",
+              fontWeight: 800,
+              fontSize: 21,
+              letterSpacing: "0.16em",
+              color: "#5B8DC9",
             }}
-          />
+          >
+            BHVA
+          </span>
           <button
             className="sidebar-collapse-toggle"
             type="button"
